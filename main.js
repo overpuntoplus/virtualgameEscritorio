@@ -4,50 +4,47 @@ const {autoUpdater} = require("electron-updater");
 
 let ventana;
 let carga;
-let win;
 
 
 
 function sendStatusToWindow(text) {
-  win.webContents.send('message', text);
-}
-function createDefaultWindow() {
-  win = new BrowserWindow();
-  win.webContents.openDevTools();
-  win.on('closed', () => {
-    win = null;
-  });
-  win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
-  return win;
+  carga.webContents.send('message', text);
 }
 
+
 autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Checking for update...');
+  sendStatusToWindow('Verificando Actualizaciones...');
 })
 autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow('Update available.');
+  sendStatusToWindow('Actualizacion Disponible!');
 })
 autoUpdater.on('update-not-available', (info) => {
-  sendStatusToWindow('Update not available.');
+  sendStatusToWindow('Actualizaciones al dia.');
 })
 autoUpdater.on('error', (err) => {
-  sendStatusToWindow('Error in auto-updater. ' + err);
+  sendStatusToWindow('Error');
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  function niceBytes(x){
+      var units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        n = parseInt(x, 10) || 0, 
+        l = 0; 
+      if(n > 1024)
+        do{l++} while((n/=1024) > 1024);
+      return(n.toFixed(n >= 10 ? 0 : 1) + ' ' + units[l]);
+  }
+  
+  let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond)+"Kbps";
   sendStatusToWindow(log_message);
 })
 autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow('Update downloaded');
+  sendStatusToWindow('Descarga Finalizada');
 });
 
 
 
 
 function ventanaPrincipal () {
-	createDefaultWindow();
 	const path = require('path');
 	const iconPath = path.join(__dirname, 'icon.png');
 	const trayIcon = nativeImage.createFromPath(iconPath);
@@ -65,7 +62,7 @@ function ventanaPrincipal () {
 	ventana.loadURL('https://saltapersonalizados.com/')
 	ventana.once('ready-to-show', () => {
 		ventana.maximize();
-		carga.close();
+		// carga.close();
 		var menuSegundoPlano = Menu.buildFromTemplate([
 			{ type: 'separator' },
 			{ label: 'Abrir', type: 'normal', click(){ ventana.maximize(); }},
@@ -75,20 +72,19 @@ function ventanaPrincipal () {
 		appIcon.setToolTip('Virtual Game');
 		appIcon.setContextMenu(menuSegundoPlano);
 	});
-	ventana.once('closed', () => {
-		ventana=null;
-	});
+	ventana.once('closed', () => { ventana=null; });
 	carga = new BrowserWindow({
 		width: 580,
 		height: 300,
 		icon: 'icon.png',
+		webPreferences: {
+			nodeIntegration: true
+		},
 		transparent: true,
 		frame: false
 	});
-	carga.loadFile('index.html');
-	carga.once('closed', () => {
-		carga=null;
-	});
+	carga.loadURL(`file://${__dirname}/index.html#v${app.getVersion()}`);
+	carga.once('closed', () => { carga=null; });
 }
 
 
@@ -102,8 +98,6 @@ function ventanaPrincipal () {
 
 
 app.on('ready', ventanaPrincipal);
-app.on('ready', function()  {
-	autoUpdater.checkForUpdatesAndNotify();
-});
+app.on('ready', function(){	autoUpdater.checkForUpdatesAndNotify(); });
 app.on('window-all-closed', function (){ if (process.platform !== 'darwin') { app.quit(); } });
 app.on('activate', function (){ if (ventana === null) { ventanaPrincipal(); } });
