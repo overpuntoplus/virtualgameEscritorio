@@ -44,6 +44,8 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Descarga Finalizada');
+  carga.close();
+  ventana.close();
 });
 
 
