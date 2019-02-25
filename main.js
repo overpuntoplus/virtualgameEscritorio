@@ -20,6 +20,7 @@ autoUpdater.on('update-available', (info) => {
 })
 autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Actualizaciones al dia.');
+  carga.close();
 })
 autoUpdater.on('error', (err) => {
   sendStatusToWindow('Error');
@@ -62,7 +63,6 @@ function ventanaPrincipal () {
 	ventana.loadURL('https://saltapersonalizados.com/')
 	ventana.once('ready-to-show', () => {
 		ventana.maximize();
-		// carga.close();
 		var menuSegundoPlano = Menu.buildFromTemplate([
 			{ type: 'separator' },
 			{ label: 'Abrir', type: 'normal', click(){ ventana.maximize(); }},
