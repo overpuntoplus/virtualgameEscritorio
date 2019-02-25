@@ -26,16 +26,20 @@ autoUpdater.on('error', (err) => {
   sendStatusToWindow('Error');
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  function niceBytes(x){
+  function niceBytes(x,xx=true){
       var units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
         n = parseInt(x, 10) || 0, 
         l = 0; 
       if(n > 1024)
         do{l++} while((n/=1024) > 1024);
+	if(xx==true){
       return(n.toFixed(n >= 10 ? 0 : 1) + ' ' + units[l]);
+	}else{
+		return(n.toFixed(n >= 10 ? 0 : 1));
+	}	
   }
   
-  let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond)+"Kbps";
+  let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred, false)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond);
   sendStatusToWindow(log_message);
 })
 autoUpdater.on('update-downloaded', (info) => {

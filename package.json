@@ -1,13 +1,13 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "release": "build"
+    "release": "build --publish always"
   },
   "repository": {
     "type": "git",
