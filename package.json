@@ -1,6 +1,6 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
@@ -11,9 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/overpuntoplus/virtualgameEscritorio.git",
-    "protocol": "https",
-    "token": "b78f4004e7ee022994b0e534fc1c60e667cb56bf"
+    "url": "git+https://github.com/overpuntoplus/virtualgameEscritorio.git"
   },
   "bugs": "https://github.com/overpuntoplus/virtualgameEscritorio/issues",
   "author": "Augusto Daniel Ruyz",
@@ -21,11 +19,10 @@
   "build": {
     "appId": "com.overapp.virtualgame",
     "productName": "VirtualGameSalta",
-    "copyright": "VG - OVER",
+    "copyright": "Augusto Daniel Ruyz",
     "win": {
       "target": [
-        "nsis",
-        "zip"
+        "nsis"
       ],
       "icon": "icon.ico",
       "publish": [
@@ -45,7 +42,6 @@
     "qr"
   ],
   "dependencies": {
-    "electron-is-dev": "^1.0.1",
     "electron-updater": "^4.0.6"
   }
 }

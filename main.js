@@ -1,24 +1,14 @@
 const {app, BrowserWindow, Tray, Menu, nativeImage} = require('electron');
 const {autoUpdater} = require("electron-updater");
-const isDev = require("electron-is-dev");
 
 
 let ventana;
 let carga;
-
-function ventanaPrincipal () {
-	
-	if(!isDev){
-		autoUpdater.checkForUpdatesAndNotify();
-	}
-	
-	
-	
-	
 let win;
 
+
+
 function sendStatusToWindow(text) {
-  log.info(text);
   win.webContents.send('message', text);
 }
 function createDefaultWindow() {
@@ -30,6 +20,7 @@ function createDefaultWindow() {
   win.loadURL(`file://${__dirname}/version.html#v${app.getVersion()}`);
   return win;
 }
+
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 })
@@ -51,15 +42,12 @@ autoUpdater.on('download-progress', (progressObj) => {
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Update downloaded');
 });
-	
-	
-createDefaultWindow();
-	
-	
-	
-	
-	
-	
+
+
+
+
+function ventanaPrincipal () {
+	createDefaultWindow();
 	const path = require('path');
 	const iconPath = path.join(__dirname, 'icon.png');
 	const trayIcon = nativeImage.createFromPath(iconPath);
@@ -90,7 +78,6 @@ createDefaultWindow();
 	ventana.once('closed', () => {
 		ventana=null;
 	});
-	
 	carga = new BrowserWindow({
 		width: 580,
 		height: 300,
@@ -104,6 +91,19 @@ createDefaultWindow();
 	});
 }
 
+
+
+
+
+
+
+
+
+
+
 app.on('ready', ventanaPrincipal);
+app.on('ready', function()  {
+	autoUpdater.checkForUpdatesAndNotify();
+});
 app.on('window-all-closed', function (){ if (process.platform !== 'darwin') { app.quit(); } });
 app.on('activate', function (){ if (ventana === null) { ventanaPrincipal(); } });
