@@ -1,13 +1,13 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --win nsis-web --ia32 --x64",
-    "release": "build --win nsis-web --ia32 --x64 --publish always"
+    "dist": "electron-builder",
+    "release": "build --publish always"
   },
   "repository": {
     "type": "git",
@@ -24,10 +24,7 @@
       "target": [
         "nsis-web"
       ],
-      "icon": "icon.ico",
-      "publish": [
-        "github"
-      ]
+      "icon": "icon.ico"
     },
 	"nsis": {
 	  "artifactName": "${productName}.Setup.${version}.${ext}",
@@ -37,7 +34,10 @@
       "runAfterFinish": true,
       "deleteAppDataOnUninstall": true,
       "differentialPackage": true
-    }
+    },
+    "publish": [
+      "github"
+    ]
   },
   "devDependencies": {
     "electron": "^4.0.5",
