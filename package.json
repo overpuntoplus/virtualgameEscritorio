@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "release": "build --publish always"
+    "dist": "electron-builder --win nsis-web --ia32 --x64",
+    "release": "build --win nsis-web --ia32 --x64 --publish always"
   },
   "repository": {
     "type": "git",
