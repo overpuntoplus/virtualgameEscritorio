@@ -29,7 +29,7 @@
 	"nsis": {
 	  "artifactName": "${productName}.Setup.${version}.${ext}",
       "oneClick": false,
-      "perMachine": true,
+      "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "runAfterFinish": true,
       "deleteAppDataOnUninstall": true,
