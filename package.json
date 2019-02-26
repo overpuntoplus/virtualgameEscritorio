@@ -29,14 +29,16 @@
 	"nsis": {
 	  "artifactName": "${productName}.Setup.${version}.${ext}",
       "oneClick": false,
-      "perMachine": false,
+      "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "runAfterFinish": true,
       "deleteAppDataOnUninstall": true,
       "differentialPackage": true
     },
     "publish": [
-      "github"
+      "provider": "github",
+	  "owner": "overpuntoplus",
+	  "releaseType": "release"
     ]
   },
   "devDependencies": {
