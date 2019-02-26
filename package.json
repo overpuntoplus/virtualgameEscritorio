@@ -1,6 +1,6 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.9",
+  "version": "1.0.0",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
@@ -22,12 +22,21 @@
     "copyright": "Augusto Daniel Ruyz",
     "win": {
       "target": [
-        "nsis"
+        "nsis-web"
       ],
       "icon": "icon.ico",
       "publish": [
         "github"
       ]
+    },
+	"nsis": {
+	  "artifactName": "${productName}.Setup.${version}.${ext}",
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": true,
+      "differentialPackage": true
     }
   },
   "devDependencies": {
