@@ -104,5 +104,6 @@ function ventanaPrincipal () {
 
 app.on('ready', ventanaPrincipal);
 app.on('ready', function(){	autoUpdater.checkForUpdatesAndNotify(); });
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => { event.preventDefault(); callback(true); });
 app.on('window-all-closed', function (){ if (process.platform !== 'darwin') { app.quit(); } });
 app.on('activate', function (){ if (ventana === null) { ventanaPrincipal(); } });

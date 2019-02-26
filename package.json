@@ -1,6 +1,6 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
@@ -36,9 +36,7 @@
       "differentialPackage": true
     },
     "publish": [
-      "provider": "github",
-	  "owner": "overpuntoplus",
-	  "releaseType": "release"
+      "github"
     ]
   },
   "devDependencies": {
