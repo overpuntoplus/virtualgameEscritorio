@@ -1,6 +1,6 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
@@ -20,7 +20,6 @@
     "appId": "com.overapp.virtualgame",
     "productName": "VirtualGameSalta",
     "copyright": "Augusto Daniel Ruyz",
-	"compression": "normal",
     "win": {
       "target": [
         "nsis"
@@ -28,15 +27,7 @@
       "icon": "icon.ico"
     },
     "nsis": {
-      "artifactName": "${productName}.Setup.${version}.${ext}",
-	  "uninstallDisplayName": "Desinstalar",
-      "oneClick": false,
-      "perMachine": true,
-      "allowToChangeInstallationDirectory": true,
-      "runAfterFinish": true,
-      "deleteAppDataOnUninstall": true,
-	  "unicode": true,
-      "differentialPackage": true
+      "artifactName": "${productName}.Setup.${version}.${ext}"
     },
     "publish": {
       "provider": "github"
