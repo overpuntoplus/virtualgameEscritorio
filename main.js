@@ -76,7 +76,7 @@ function ventanaPrincipal () {
 		transparent: true,
 		frame: false
 	});
-	carga.loadURL(`file://${__dirname}/index.html#v${app.getVersion()}`);
+	carga.loadURL(`file://${__dirname}/carga.html#v${app.getVersion()}`);
 	carga.once('closed', () => { carga=null; });
 }
 
