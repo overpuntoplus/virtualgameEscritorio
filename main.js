@@ -25,10 +25,11 @@ autoUpdater.on('download-progress', (progressObj) => {
   }
   let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred, false)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond);
   sendStatusToWindow(log_message);
-});
+})
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Descarga Finalizada');
-  carga.close();
+  app.relaunch();
+  app.exit();
 });
 
 
