@@ -5,26 +5,11 @@ const isDev = require('electron-is-dev');
 let ventana;
 let carga;
 
-
-
-function sendStatusToWindow(text) {
-  carga.webContents.send('message', text);
-}
-
-
-autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Verificando Actualizaciones...');
-})
-autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow('Actualizacion Disponible!');
-})
-autoUpdater.on('update-not-available', (info) => {
-  sendStatusToWindow('Actualizaciones al dia.');
-  carga.close();
-})
-autoUpdater.on('error', (err) => {
-  sendStatusToWindow('Error');
-})
+function sendStatusToWindow(text){ carga.webContents.send('message', text); }
+autoUpdater.on('checking-for-update', () => { sendStatusToWindow('Verificando Actualizaciones...'); });
+autoUpdater.on('update-available', (info) => { sendStatusToWindow('Actualizacion Disponible!'); });
+autoUpdater.on('update-not-available', (info) => { sendStatusToWindow('Actualizaciones al dia.'); carga.close(); });
+autoUpdater.on('error', (err) => { sendStatusToWindow('Error'); });
 autoUpdater.on('download-progress', (progressObj) => {
   function niceBytes(x,xx=true){
       var units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
@@ -38,10 +23,9 @@ autoUpdater.on('download-progress', (progressObj) => {
 		return(n.toFixed(n >= 10 ? 0 : 1));
 	}	
   }
-  
   let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred, false)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond);
   sendStatusToWindow(log_message);
-})
+});
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Descarga Finalizada');
   carga.close();
@@ -94,15 +78,6 @@ function ventanaPrincipal () {
 	carga.loadURL(`file://${__dirname}/index.html#v${app.getVersion()}`);
 	carga.once('closed', () => { carga=null; });
 }
-
-
-
-
-
-
-
-
-
 
 
 app.on('ready', ventanaPrincipal);
