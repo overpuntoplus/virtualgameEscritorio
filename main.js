@@ -1,6 +1,6 @@
 const {app, BrowserWindow, Tray, Menu, nativeImage} = require('electron');
 const {autoUpdater} = require("electron-updater");
-
+const isDev = require('electron-is-dev');
 
 let ventana;
 let carga;
@@ -67,6 +67,9 @@ function ventanaPrincipal () {
 	});
 	ventana.loadURL('https://saltapersonalizados.com/')
 	ventana.once('ready-to-show', () => {
+		if(isDev){
+			carga.close();
+		}
 		ventana.maximize();
 		var menuSegundoPlano = Menu.buildFromTemplate([
 			{ type: 'separator' },
@@ -104,6 +107,5 @@ function ventanaPrincipal () {
 
 app.on('ready', ventanaPrincipal);
 app.on('ready', function(){	autoUpdater.checkForUpdatesAndNotify(); });
-app.on('certificate-error', (event, webContents, url, error, certificate, callback) => { event.preventDefault(); callback(true); });
 app.on('window-all-closed', function (){ if (process.platform !== 'darwin') { app.quit(); } });
 app.on('activate', function (){ if (ventana === null) { ventanaPrincipal(); } });
