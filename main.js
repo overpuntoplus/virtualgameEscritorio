@@ -28,11 +28,8 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Descarga Finalizada');
-  app.relaunch();
-  app.exit();
+  autoUpdater.quitAndInstall();
 });
-
-
 
 
 function ventanaPrincipal () {
