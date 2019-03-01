@@ -7,8 +7,8 @@ let carga;
 
 function sendStatusToWindow(text){ carga.webContents.send('message', text); }
 autoUpdater.on('checking-for-update', () => { sendStatusToWindow('Verificando Actualizaciones...'); });
-autoUpdater.on('update-available', (info) => { sendStatusToWindow('Actualizacion Disponible!'); });
-autoUpdater.on('update-not-available', (info) => { sendStatusToWindow('Actualizaciones al dia.'); carga.close(); });
+autoUpdater.on('update-available', (info) => { sendStatusToWindow('Descargando Actualizacion... '); });
+autoUpdater.on('update-not-available', (info) => { carga.close(); });
 autoUpdater.on('error', (err) => { sendStatusToWindow('Error'); });
 autoUpdater.on('download-progress', (progressObj) => {
   function niceBytes(x,xx=true){
@@ -26,13 +26,12 @@ autoUpdater.on('download-progress', (progressObj) => {
   let log_message="Actualizando... "+ parseInt(progressObj.percent)+"% ...("+niceBytes(progressObj.transferred, false)+"/"+niceBytes(progressObj.total)+") "+niceBytes(progressObj.bytesPerSecond);
   sendStatusToWindow(log_message);
 })
-autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow('Descarga Finalizada');
-  autoUpdater.quitAndInstall();
-});
+autoUpdater.on('update-downloaded', (info) => { autoUpdater.quitAndInstall(); });
 
 
-function ventanaPrincipal () {
+function ventanaPrincipal () { if(ventana==null){
+	
+	
 	const path = require('path');
 	const iconPath = path.join(__dirname, 'icon.png');
 	const trayIcon = nativeImage.createFromPath(iconPath);
@@ -57,12 +56,19 @@ function ventanaPrincipal () {
 			{ type: 'separator' },
 			{ label: 'Abrir', type: 'normal', click(){ ventana.maximize(); }},
 			{ label: 'Minimizar', type: 'normal', click(){ ventana.minimize(); } },
+			{ type: 'separator' },
+			{ label: 'Cerrar', type: 'normal', click(){ ventana.destroy(); app.quit(); } },
 			{ type: 'separator' }
 		]);
 		appIcon.setToolTip('Virtual Game');
 		appIcon.setContextMenu(menuSegundoPlano);
+		appIcon.on('click', function(e){
+			if (ventana.isVisible()) { ventana.hide(); } else { ventana.maximize(); }
+		});
 	});
 	ventana.once('closed', () => { ventana=null; });
+	ventana.on('close', function (event) { event.preventDefault(); ventana.hide(); });
+	
 	carga = new BrowserWindow({
 		width: 580,
 		height: 300,
@@ -75,7 +81,9 @@ function ventanaPrincipal () {
 	});
 	carga.loadURL(`file://${__dirname}/carga.html#v${app.getVersion()}`);
 	carga.once('closed', () => { carga=null; });
-}
+
+
+}}
 
 
 app.on('ready', ventanaPrincipal);
