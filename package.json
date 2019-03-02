@@ -1,6 +1,6 @@
 {
   "name": "VirtualGameSalta",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Buscador y Escaner QR",
   "main": "main.js",
   "scripts": {
