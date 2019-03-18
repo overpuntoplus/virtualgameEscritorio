@@ -1,5 +1,5 @@
 // CONSTANTES PRINCIPALES
-const {app, BrowserWindow, Tray, Menu, nativeImage} = require('electron');
+const {app, BrowserWindow, Tray, Menu, nativeImage, dialog} = require('electron');
 const {autoUpdater} = require("electron-updater");
 const isDev = require('electron-is-dev');
 const gotTheLock = app.requestSingleInstanceLock();
@@ -10,7 +10,7 @@ if (!gotTheLock) {
   app.quit()
 } else {
 	// ESTRUCTURAS PRINCIPALES
-	let ventana; let carga;
+	let ventana; let carga; let username = process.env.username || process.env.user;
 	function actualizarPrincipal() {
 			ventana.maximize();
 			carga.show();
@@ -18,6 +18,8 @@ if (!gotTheLock) {
 			ventana.loadURL(URLAPPWEBlink);
 	}
 	function ventanaPrincipal() {
+		console.log(username);
+		
 			const path = require('path');
 			const iconPath = path.join(__dirname, 'icon.png');
 			const trayIcon = nativeImage.createFromPath(iconPath);
