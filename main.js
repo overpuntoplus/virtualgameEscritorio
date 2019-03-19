@@ -10,7 +10,7 @@ if (!gotTheLock) {
   app.quit()
 } else {
 	// ESTRUCTURAS PRINCIPALES
-	let ventana; let carga; let username = process.env.username || process.env.user;
+	let ventana; let catalogos; let precios; let carga; let username = process.env.username || process.env.user;
 	function actualizarPrincipal() {
 			ventana.maximize();
 			carga.show();
@@ -44,14 +44,55 @@ if (!gotTheLock) {
 					{ type: 'separator' },
 					{ label: 'Actualizar', type: 'normal', click(){ actualizarPrincipal(); } },
 					{ type: 'separator' },
-					{ label: 'Cerrar', type: 'normal', click(){ if(ventana){ ventana.destroy(); } if(carga){ carga.destroy(); } app.quit(); } },
+					{ label: 'Cerrar', type: 'normal', click(){ if(ventana){ ventana.destroy(); } if(carga){ carga.destroy(); } if(catalogos){ catalogos.destroy(); } if(precios){ precios.destroy();} app.quit(); } },
 					{ type: 'separator' }
 				]);
 				appIcon.setToolTip('Virtual Game');
 				appIcon.setContextMenu(menuSegundoPlano);
 				appIcon.on('click', function(e){
 					if (ventana.isVisible()) { ventana.hide(); } else { ventana.maximize(); }
+					if(catalogos!=null || precios!=null){
+						catalogos.maximize();
+						precios.maximize();
+					}
 				});
+				
+				
+				
+				
+				
+				if(username=="Richard"){
+					ventana.hide();
+					
+					catalogos = new BrowserWindow({
+						width: 800,
+						height: 600,
+						icon: 'icon.png',
+						webPreferences: {
+							nodeIntegration: false
+						},
+						show: true, frame: false
+					});
+					catalogos.loadURL(URLAPPWEBlink+"catalogo/juguetes/");
+					catalogos.maximize();
+					catalogos.once('closed', () => { catalogos=null; });
+					catalogos.on('close', function (event) { event.preventDefault(); });
+					precios = new BrowserWindow({
+						width: 800,
+						height: 600,
+						icon: 'icon.png',
+						webPreferences: {
+							nodeIntegration: false
+						},
+						show: true, frame: false
+					});
+					precios.loadURL(URLAPPWEBlink+"precios/");
+					precios.maximize();
+					precios.once('closed', () => { catalogos=null; });
+					precios.on('close', function (event) { event.preventDefault(); });
+				}
+				
+				
 			});
 			ventana.once('closed', () => { ventana=null; });
 			ventana.on('close', function (event) { event.preventDefault(); ventana.hide(); });
