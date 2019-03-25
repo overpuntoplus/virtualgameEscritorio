@@ -15,11 +15,21 @@ if (!gotTheLock) {
 			ventana.maximize();
 			carga.show();
 			autoUpdater.checkForUpdatesAndNotify();
-			ventana.loadURL(URLAPPWEBlink);
+			ventana.webContents.session.clearCache(function(){});
+			ventana.loadURL(URLAPPWEBlink, {"extraHeaders" : "pragma: no-cache\n"});
+			if(catalogos){
+				catalogos.webContents.session.clearCache(function(){});
+				catalogos.loadURL(URLAPPWEBlink+"catalogo/juguetes/", {"extraHeaders" : "pragma: no-cache\n"});
+			}
+			if(precios){
+				precios.webContents.session.clearCache(function(){});
+				precios.loadURL(URLAPPWEBlink+"precios/", {"extraHeaders" : "pragma: no-cache\n"});
+			}
+			if(isDev){
+				carga.hide();
+			}
 	}
-	function ventanaPrincipal() {
-		console.log(username);
-		
+	function ventanaPrincipal() {		
 			const path = require('path');
 			const iconPath = path.join(__dirname, 'icon.png');
 			const trayIcon = nativeImage.createFromPath(iconPath);
@@ -57,13 +67,9 @@ if (!gotTheLock) {
 					}
 				});
 				
-				
-				
-				
-				
-				if(username=="Richard"){
+				// MODO ADMINISTRADOR
+				if(username=="Richard" || username=="Virtual Game Princip" || username=="NOTEBOOK"){
 					ventana.hide();
-					
 					catalogos = new BrowserWindow({
 						width: 800,
 						height: 600,
@@ -71,12 +77,15 @@ if (!gotTheLock) {
 						webPreferences: {
 							nodeIntegration: false
 						},
-						show: true, frame: false
+						show: false, frame: false
 					});
 					catalogos.loadURL(URLAPPWEBlink+"catalogo/juguetes/");
-					catalogos.maximize();
 					catalogos.once('closed', () => { catalogos=null; });
 					catalogos.on('close', function (event) { event.preventDefault(); });
+					catalogos.once('ready-to-show', ()=>{
+						catalogos.maximize();
+					});
+					
 					precios = new BrowserWindow({
 						width: 800,
 						height: 600,
@@ -84,12 +93,14 @@ if (!gotTheLock) {
 						webPreferences: {
 							nodeIntegration: false
 						},
-						show: true, frame: false
+						show: false, frame: false
 					});
 					precios.loadURL(URLAPPWEBlink+"precios/");
-					precios.maximize();
 					precios.once('closed', () => { catalogos=null; });
 					precios.on('close', function (event) { event.preventDefault(); });
+					precios.once('ready-to-show', ()=>{
+						precios.maximize();
+					});
 				}
 				
 				
